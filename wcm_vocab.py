@@ -17,19 +17,18 @@ class Vocabulary(BaseVocab):
         return self.table['unk']
 
 
-# class Context(BaseStorage):
+class Context(BaseVocab):
 
-#     def __init__(self, c_size):
-#         super().__init__(c_size)
-#         self.counter = 1
+    def __init__(self, c_size):
+        super().__init__(c_size)
+        self.counter = 1
 
-#     def add(self, word):
-#         if len(self) == 0:
-#                 self.values_storage['unk'] = 0 
-#         if word not in self.values_storage and not self.is_full(): 
-#             self.values_storage[word] = self.counter
-#             self.counter += 1
-#             self.values_word = tuple(self.values_storage.keys())
+    def add(self, word):
+        if len(self) == 0:
+                self.table['unk'] = 0 
+        if word not in self.table and not self.is_full(): 
+            self.table[word] = self.counter
+            self.counter += 1
 
 
 class WordRep:
