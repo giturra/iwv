@@ -1,3 +1,5 @@
+import abc
+
 from river.base.transformer import Transformer
 from river.feature_extraction.vectorize import VectorizerMixin
 
@@ -30,3 +32,9 @@ class IncrementalWordVector(Transformer, VectorizerMixin):
         self.vocab_size = vocab_size
         self.vocab_size = vector_size
         self.window_size = window_size
+    
+    @abc.abstractmethod
+    def learn_many(X, y=None, **kwargs):
+        ...
+    
+    # todo preguntar al pablo si esto es mala práctica.
