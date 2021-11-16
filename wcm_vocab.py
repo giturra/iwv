@@ -1,3 +1,4 @@
+from collections import defaultdict
 from _vocab import BaseVocab
 
 class Vocabulary(BaseVocab):
@@ -15,6 +16,7 @@ class Vocabulary(BaseVocab):
         if word in self.table:
             return self.table[word]
         return self.table['unk']
+
 
 
 class Context(BaseVocab):
@@ -38,7 +40,7 @@ class WordRep:
         self.c_size = c_size
         self.c_counter = 0
         # save counter between target and its contexts
-        self.contexts = dict()
+        self.contexts = defaultdict(int)
         # for tracking number of tweets that appears
         #self.num_tweets = 0
         self.counter = 0
