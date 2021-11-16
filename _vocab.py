@@ -24,4 +24,7 @@ class BaseVocab:
 
     def __repr__(self):
         return self.table.keys().__repr__()
+    
+    def __contains__(self, word):
+        return word in self.table
         
