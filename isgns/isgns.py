@@ -71,7 +71,6 @@ class ISGNS(IncrementalWordVector):
         self.optimizer = torch.optim.Adagrad(self.model.parameters())
         self.criterion = torch.nn.BCEWithLogitsLoss()
     
-
     def learn_many(self, X, y=None):
         X_input = None
         y_true = None
@@ -102,12 +101,12 @@ class ISGNS(IncrementalWordVector):
                         neg_samples[k] = int(self.unigram_table.sample(self.randomizer))
 
                     if X_input is None and y_true is None:
-                        X_input, y_true = create_input(target_index, context_index, neg_samples)    
+                        X_input, y_true = _create_input(target_index, context_index, neg_samples)    
                         #print(X_input.size())
                         X_input.to(self.device)
                         y_true.to(self.device)
                     else:
-                        x_input, labels = create_input(target_index, context_index, neg_samples)
+                        x_input, labels = _create_input(target_index, context_index, neg_samples)
                         X_input = torch.vstack((X_input, x_input))
                         #print(X_input.size())
                         X_input.to(self.device)
@@ -124,3 +123,20 @@ class ISGNS(IncrementalWordVector):
                 
         
         self.optimizer.step()
+
+    def update_unigram_table(self, word: str):
+        word_index = self.vocab.add(word)
+        self.total_count += 1
+        if word_index != -1:
+            self.counts[word_index] += 1
+            F = np.power(self.counts[word_index], self.alpha) - np.power(self.counts[word_index] - 1, self.alpha)
+            self.unigram_table.update(word_index, F, self.randomizer)
+    
+
+def _create_input(target_index, context_index, neg_samples):
+    input = [[int(target_index), int(context_index)]]
+    labels = [1]
+    for neg_sample in neg_samples:
+        input.append([target_index, int(neg_sample)])
+        labels.append(0)
+    return torch.LongTensor([input]), torch.LongTensor([labels])
