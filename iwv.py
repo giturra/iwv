@@ -30,7 +30,7 @@ class IncrementalWordVector(Transformer, VectorizerMixin):
         )
         
         self.vocab_size = vocab_size
-        self.vocab_size = vector_size
+        self.vector_size = vector_size
         self.window_size = window_size
     
     @abc.abstractmethod
