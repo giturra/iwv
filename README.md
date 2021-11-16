@@ -1,5 +1,11 @@
 # Incremental Word Vectors
 
+## Warning
+
+This is still unfinished implementations, I am currently working on it.
+
+## Introduction
+
 ## 💬 Citation
 
 ```bibtex
