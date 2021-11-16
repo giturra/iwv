@@ -133,6 +133,13 @@ class ISGNS(IncrementalWordVector):
             self.unigram_table.update(word_index, F, self.randomizer)
     
 
+    def get_embedding(self, word):
+        index = self.vocab[word]
+        u  = self.model.embedding_u.weight[index]
+        v  = self.model.embedding_v.weight[index]
+        return ((u + v) / 2).cpu().detach().numpy()
+
+
 def _create_input(target_index, context_index, neg_samples):
     input = [[int(target_index), int(context_index)]]
     labels = [1]
