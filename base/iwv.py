@@ -38,3 +38,7 @@ class IncrementalWordVector(Transformer, VectorizerMixin):
         ...
     
     # todo preguntar al pablo si esto es mala práctica.
+
+    @abc.abstractmethod
+    def get_embedding(self, word):
+        ...
