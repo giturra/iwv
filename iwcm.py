@@ -33,13 +33,13 @@ class WordContextMatrix(IncrementalWordVector):
             tokenizer=tokenizer,
             ngram_range=ngram_range,
         )
-        self.vocabulary = Vocabulary(self.v_size)
-        self.contexts = Context(self.c_size)
+        self.vocabulary = Vocabulary(self.vocab_size)
+        self.contexts = Context(self.vector_size)
         self.d = 0
 
         self.is_ppmi = is_ppmi
 
-        self.vocabulary.add(WordRep('unk', self.c_size))
+        self.vocabulary.add(WordRep('unk', self.vector_size))
 
         self.f = 0
     
@@ -61,18 +61,19 @@ class WordContextMatrix(IncrementalWordVector):
     def learn_one(self, x, **kwargs):
         tokens = self.process_text(x)
         for w in tokens:
+            #print(w)
             i = tokens.index(w)
             self.d += 1
             if w not in self.vocabulary:
-                self.vocabulary.add(WordRep(w, self.c_size))
-            contexts = _get_contexts(i, self.w_size, tokens)
+                self.vocabulary.add(WordRep(w, self.vector_size))
+            contexts = _get_contexts(i, self.window_size, tokens)
             focus_word = self.vocabulary[w]
             # if x in self.vocabulary:
             #     self.vocabulary[x].counter += 1
             for c in contexts:
                 if c not in self.contexts:
                     self.contexts.add(c)
-                if c not in self.contexts and len(self.contexts) == self.c_size and focus_word.word == 'unk':
+                if c not in self.contexts and len(self.contexts) == self.vector_size and focus_word.word == 'unk':
                     focus_word.add_context('unk')
                 elif c not in self.contexts:
                     focus_word.add_context('unk')
@@ -81,10 +82,13 @@ class WordContextMatrix(IncrementalWordVector):
             # print(f"{focus_word.word} {self.transform_one(focus_word.word)}")
         return self
     
+    def learn_many(X, y=None, **kwargs):
+        ...
+    
     def get_embedding(self, x):
         if x in self.vocabulary:
             word_rep = self.vocabulary[x]
-            embedding = np.zeros(self.c_size, dtype=float)
+            embedding = np.zeros(self.vector_size, dtype=float)
             contexts = word_rep.contexts.items()
             if self.is_ppmi:
                 for context, coocurence in contexts:
