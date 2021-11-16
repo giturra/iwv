@@ -1,5 +1,6 @@
 import torch
 
+
 class SkipGram(torch.nn.Module):
     def __init__(self, vocab_size, embedding_dim):
         super(SkipGram, self).__init__()

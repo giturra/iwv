@@ -1,4 +1,4 @@
-from vocab import BaseVocab
+from _vocab import BaseVocab
 
 class Vocabulary(BaseVocab):
 
