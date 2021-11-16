@@ -2,7 +2,7 @@
 
 ## Warning
 
-This is unfinished project, I am currently working on it.
+This is an unfinished project, I am currently working on it.
 
 ## Introduction
 
