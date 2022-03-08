@@ -11,10 +11,18 @@ class BaseVocab:
     def is_full(self):
         return self.current_size == self.max_size
 
+    def is_empty(self):
+        return self.current_size == 0
+
     @abc.abstractmethod
     def add(self, word):
         ...
     
+    def remove(self, word):
+        if not self.is_empty():
+            del self.table[word]
+            self.current_size -= 1
+
     def __len__(self):
         return len(self.table.values())
     
