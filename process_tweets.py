@@ -49,7 +49,7 @@ pre_trained_model = spacy.load("en_core_web_sm")
 bat_size = 256 
 buff_size = 2048  # a multiple of bat_size
 emp_ldr = TweetStreamLoader(fn, bat_size, buff_size, shuffle=False) 
-
+i = 0
 for (b_idx, batch) in enumerate(emp_ldr):
     with open('tweets.txt', 'w', encoding='utf-8') as wr:
         for tweet in batch:
@@ -61,4 +61,6 @@ for (b_idx, batch) in enumerate(emp_ldr):
             if detection['language'] == 'en' and detection['score'] >= 0.85:
                 tweet = strip_all_entities(strip_links(tweet)).rstrip('\n')
                 wr.write(f'{tweet}\n')
+                i += 1
+print(i)
 emp_ldr.fin.close()
